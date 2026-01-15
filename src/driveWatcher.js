@@ -1,5 +1,3 @@
-const mongoose = require("mongoose");
-
 const {
   listFiles,
   downloadFile,
@@ -7,14 +5,6 @@ const {
 } = require('./drive');
 
 const processAudio = require('./processor');
-
-async function connectDB() {
-  if (mongoose.connection.readyState === 1) return;
-
-  await mongoose.connect(process.env.MONGO_URI);
-
-  console.log("✅ MongoDB Connected");
-}
 
 async function watchDrive() {
   console.log("👀 Watching Google Drive for new files...");
@@ -40,12 +30,4 @@ async function watchDrive() {
   }
 }
 
-(async () => {
-  try {
-    await connectDB();
-    await watchDrive();
-  } catch (err) {
-    console.error("❌ Failed to start Drive watcher:", err);
-    process.exit(1);
-  }
-})();
+module.exports = watchDrive;
